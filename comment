@@ -1,0 +1,55 @@
+//Store procedure sql
+CREATE PROCEDURE spComments2   
+    @TaskId  int   
+AS 
+SELECT distinct comment FROM comment, tblTask
+where taskId = @TaskId
+
+GO 
+
+
+EXECUTE spComments2 6
+
+
+//In controller
+public ActionResult Details(int? id, comment pcomment)
+        {
+           //db.Configuration.ProxyCreationEnabled = false;
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            tblTask tblTask = db.tblTasks.Find(id);
+            if (tblTask == null)
+            {
+                return HttpNotFound();
+            }
+            Random n = new Random();
+            comment oComment = new comment
+            {
+                id = n.Next(),
+                comment1 = pcomment.comment1,
+                taskId = id
+            };
+            db.comments.Add(oComment);
+            db.SaveChanges();
+
+		
+	    //Store procedure
+            var comments = db.spComments2(id);
+            ViewBag.comment = comments;
+            return View(tblTask);
+        }  
+
+//In Details.cshtml
+//display
+ @foreach(var value in ViewBag.comment)
+          {@Html.Raw(value +"<br/>")
+          }
+
+//insert
+@using (Html.BeginForm("Details","tblTasks", FormMethod.Post, new{role = "form", id = "saveForm"}))
+{
+    <input type="text" name="Comment1"><br>
+    <input type="submit" value="Submit">
+} 
