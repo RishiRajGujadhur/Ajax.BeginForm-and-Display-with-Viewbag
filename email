@@ -25,7 +25,7 @@ namespace WebApplication2.Controllers
                             </body>
                             </html>";
 
-            sendHtmlEmail("r.r.gujadhur@gmail.com","djCool0026", "r.r.gujadhur@gmail.com", Themessage, "RishiGujadhur", "Test HTML Email", "smtp.gmail.com", 25);
+            sendHtmlEmail("r.r.gujadhur@gmail.com","password", "r.r.gujadhur@gmail.com", Themessage, "RishiGujadhur", "Test HTML Email", "smtp.gmail.com", 25);
 
             return View();
         }
