@@ -1,0 +1,78 @@
+using System;
+using System.Collections.Generic;
+using System.Drawing;
+using System.Linq;
+using System.Net.Mail;
+using System.Web;
+using System.Web.Mvc;
+
+namespace WebApplication2.Controllers
+{
+    public class HomeController : Controller
+    {
+        public ActionResult Index()
+        {
+            return View();
+        }
+
+        public ActionResult About(int? email){
+            
+            if(email == 1)
+            {
+                ViewBag.Message = "Email Sent";
+            string Themessage = "test";
+            sendHtmlEmail("r.r.gujadhur@gmail.com", "djCool0026", "r.r.gujadhur@gmail.com", Themessage, "RishiGujadhur", "Test HTML Email", "smtp.gmail.com", 25);
+
+            }
+            return View();
+        }
+ 
+      
+      
+
+        public void sendHtmlEmail(string from_Email, string from_Password, string to_Email, string body, string from_Name, string Subject, string SMTP_IP, Int32 SMTP_Server_Port)
+        {
+            //create an instance of new mail message
+            MailMessage mail = new MailMessage();
+
+            //set the HTML format to true
+            mail.IsBodyHtml = true;
+
+            //create Alrternative HTML view
+            AlternateView htmlView = AlternateView.CreateAlternateViewFromString(body, null, "text/html");
+
+            //Add Image
+            LinkedResource theEmailImage = new LinkedResource(Server.MapPath("~/Content/Logo.png"));
+            theEmailImage.ContentId = "myImageID";
+
+            //Add the Image to the Alternate view
+            htmlView.LinkedResources.Add(theEmailImage);
+
+            //Add view to the Email Message
+            mail.AlternateViews.Add(htmlView);
+
+            //set the ""from email"" address and specify a friendly 'from' name
+            mail.From = new MailAddress(from_Email, from_Name);
+
+            //set the ""to"" email address
+            mail.To.Add(to_Email);
+
+            //set the Email subject
+            mail.Subject = Subject;
+
+            //set the SMTP info
+            System.Net.NetworkCredential cred = new System.Net.NetworkCredential(from_Email, from_Password);
+            SmtpClient smtp = new SmtpClient("smtp.gmail.com", 587);
+            smtp.EnableSsl = true;
+            smtp.DeliveryMethod = SmtpDeliveryMethod.Network;
+            smtp.UseDefaultCredentials = false;
+            smtp.Credentials = cred;
+            //send the email
+            smtp.Send(mail);
+           
+             
+        }
+
+        
+    }
+}
