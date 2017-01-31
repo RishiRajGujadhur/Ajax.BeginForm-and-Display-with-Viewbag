@@ -1,0 +1,24 @@
+@{
+    ViewBag.Title = "About";
+}
+<h2>Email App</h2>
+ 
+<script src="~/Scripts/jquery-1.10.2.js"></script>
+<!-- JavaScript -->
+<script src="//cdn.jsdelivr.net/alertifyjs/1.9.0/alertify.min.js"></script>
+<!-- CSS -->
+<link rel="stylesheet" href="//cdn.jsdelivr.net/alertifyjs/1.9.0/css/alertify.min.css" />
+<!-- Default theme -->
+<link rel="stylesheet" href="//cdn.jsdelivr.net/alertifyjs/1.9.0/css/themes/default.min.css" />
+    @Html.ActionLink("Email Me", "About", new { email = 1 }, new { @class = "btn btn-primary btn-lg btn-block" }) 
+@if (ViewBag.Message != null)
+{
+    <script>
+
+  $(document).ready(function () {
+  alertify.set('notifier', 'position', 'top-left');
+  alertify.success('@ViewBag.Message');
+});
+
+    </script>
+}
